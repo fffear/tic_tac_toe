@@ -1,9 +1,6 @@
 class Board
-
-  attr_accessor :player_1, :player_2
   def initialize
     @board = (0..8).each_with_object([]) { |num, array| array << " "}
-    #self.display_board
     @player_turn = ""
     @x_or_o_selection_winner = ""
     @x_or_o_selection_loser = ""
@@ -40,6 +37,18 @@ class Board
     end    
   end
   
+  def game_introduction
+    puts "Welcome to my TIC TAC TOE game!"
+    puts ""
+    puts "The rules for the game are simple. Players will take turns to place either X's or O's on the 3 by 3 grid."
+    puts ""
+    puts "You can win the game if you can get 3 X's or O's in a row, column as well as diagonally."
+    puts ""
+    puts "This game will be entirely controlled from the command line, and there will be prompts throughout the game to provide assistance."
+    puts "Enjoy!"
+    puts  ""
+  end
+
   def start_game
     puts "Let starts the game!"
     self.display_board
@@ -92,6 +101,7 @@ class Board
       when "T" then puts "Player 1 selected tails!"
       else puts "You didn't select heads or tails."
       end
+      puts ""
       
       break if @coin_selection == "H" || @coin_selection == "T"
     end
@@ -115,7 +125,8 @@ class Board
       end
       
       if @x_or_o_selection_winner == "X" || @x_or_o_selection_winner == "O"
-        puts "#{@coin_toss_winner} has chosen to play as \"#{@x_or_o_selection_winner}\"" 
+        puts "#{@coin_toss_winner} has chosen to play as \"#{@x_or_o_selection_winner}\""
+        puts ""
         break
       else
         puts "You didn't select 'X' or 'O'. Please make a selection."
@@ -248,13 +259,21 @@ class Board
         restart_game
         break
       end
+
+      if n == 8
+        puts "Draw."
+        restart_game
+        break
+      end
+
     end
   end
 
   def restart_game
     loop do
-      puts "Do you want to play again?"
+      puts "Do you want to play again? (Y/N)"
       response = gets.chomp.upcase
+      puts ""
 
       if response == "Y"
         @board = (0..8).each_with_object([]) { |num, array| array << " "}
@@ -318,12 +337,11 @@ class Board
   end
 
   protected
-  def board
-    @board
-  end
+  attr_accessor :player_1, :player_2
 end
 
 board1 = Board.new
 
+board1.game_introduction
 board1.set_player_details
 board1.start_game
