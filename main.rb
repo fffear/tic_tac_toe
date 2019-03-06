@@ -3,7 +3,7 @@ class Board
   attr_accessor :player_1, :player_2
   def initialize
     @board = (0..8).each_with_object([]) { |num, array| array << " "}
-    self.display_board
+    #self.display_board
     @player_turn = ""
     @x_or_o_selection_winner = ""
     @x_or_o_selection_loser = ""
@@ -42,6 +42,7 @@ class Board
   
   def start_game
     puts "Let starts the game!"
+    self.display_board
     player_turns
   end
 
@@ -146,34 +147,44 @@ class Board
         coordinates = gets.chomp.upcase
   
         if @coordinates.none? { |position| position == coordinates }
+          self.display_board
           puts "You didn't enter appropriate cooridinates."
           redo
         elsif @coordinates.one? { |position| position == coordinates }
           if coordinates == "A1" && @board[0] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "A2" && @board[1] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "A3" && @board[2] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "B1" && @board[3] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "B2" && @board[4] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "B3" && @board[5] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "C1" && @board[6] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "C2" && @board[7] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "C3" && @board[8] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           end
@@ -187,34 +198,44 @@ class Board
         coordinates = gets.chomp.upcase
         
         if @coordinates.none? { |position| position == coordinates }
+          self.display_board
           puts "You didn't enter appropriate cooridinates."
           redo 
         elsif @coordinates.one? { |position| position == coordinates }
           if coordinates == "A1" && @board[0] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "A2" && @board[1] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "A3" && @board[2] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "B1" && @board[3] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "B2" && @board[4] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "B3" && @board[5] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "C1" && @board[6] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "C2" && @board[7] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           elsif coordinates == "C3" && @board[8] != " "
+            self.display_board
             puts "You can't select that square, it has already been chosen. Please select again."
             redo
           end
@@ -222,6 +243,77 @@ class Board
         end
         self.display_board
       end
+
+      if victory_conditions
+        restart_game
+        break
+      end
+    end
+  end
+
+  def restart_game
+    loop do
+      puts "Do you want to play again?"
+      response = gets.chomp.upcase
+
+      if response == "Y"
+        @board = (0..8).each_with_object([]) { |num, array| array << " "}
+        @player_turn = ""
+        @x_or_o_selection_winner = ""
+        @x_or_o_selection_loser = ""
+        @coin_toss = ""
+        @coin_toss_winner = ""
+        @coin_selection = ""
+        @player_1 = {}
+        @player_2 = {}
+        @player_turn = ""
+        self.set_player_details
+        self.start_game
+      elsif response == "N"
+        break
+      else
+        puts "You didn't select yes or no."
+        redo
+      end
+      break
+    end
+
+  end
+
+  def victory_conditions
+    case
+    when @board[0] == @board[3] && @board[0] == @board[6] && @board[0] != " " #column victory conditions
+      puts "PLAYER 1 WINS!" if @board[0] == @player_1[:x_or_o_selection]
+      puts "PLAYER 2 WINS!" if @board[0] == @player_2[:x_or_o_selection]
+      true
+    when @board[1] == @board[4] && @board[1] == @board[7] && @board[1] != " "
+      puts "PLAYER 1 WINS!" if @board[1] == @player_1[:x_or_o_selection]
+      puts "PLAYER 2 WINS!" if @board[1] == @player_2[:x_or_o_selection]
+      true
+    when @board[2] == @board[5] && @board[2] == @board[8] && @board[2] != " "
+      puts "PLAYER 1 WINS!" if @board[2] == @player_1[:x_or_o_selection]
+      puts "PLAYER 2 WINS!" if @board[2] == @player_2[:x_or_o_selection]
+      true
+    when @board[0] == @board[1] && @board[0] == @board[2] && @board[0] != " " #row victory conditions
+      puts "PLAYER 1 WINS!" if @board[0] == @player_1[:x_or_o_selection]
+      puts "PLAYER 2 WINS!" if @board[0] == @player_2[:x_or_o_selection]
+      true
+    when @board[3] == @board[4] && @board[3] == @board[5] && @board[3] != " "
+      puts "PLAYER 1 WINS!" if @board[3] == @player_1[:x_or_o_selection]
+      puts "PLAYER 2 WINS!" if @board[3] == @player_2[:x_or_o_selection]
+      true
+    when @board[6] == @board[7] && @board[6] == @board[8] && @board[6] != " "
+      puts "PLAYER 1 WINS!" if @board[6] == @player_1[:x_or_o_selection]
+      puts "PLAYER 2 WINS!" if @board[6] == @player_2[:x_or_o_selection]
+      true  
+    when @board[0] == @board[4] && @board[0] == @board[8] && @board[0] != " " #diagonal victory conditions
+      puts "PLAYER 1 WINS!" if @board[0] == @player_1[:x_or_o_selection]
+      puts "PLAYER 2 WINS!" if @board[0] == @player_2[:x_or_o_selection]
+      true
+    when @board[2] == @board[4] && @board[2] == @board[6] && @board[2] != " "
+      puts "PLAYER 1 WINS!" if @board[2] == @player_1[:x_or_o_selection]
+      puts "PLAYER 2 WINS!" if @board[2] == @player_2[:x_or_o_selection]
+      true
     end
   end
 
@@ -235,6 +327,3 @@ board1 = Board.new
 
 board1.set_player_details
 board1.start_game
-
-p board1.player_1
-p board1.player_2
