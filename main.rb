@@ -1,4 +1,5 @@
 class Board
+  attr_accessor :board
   def initialize
     @board = (0..8).each_with_object([]) { |num, array| array << " "}
     @player_turn = ""
@@ -342,6 +343,8 @@ end
 
 board1 = Board.new
 
-board1.game_introduction
-board1.set_player_details
-board1.start_game
+#board1.game_introduction
+#board1.set_player_details
+#board1.start_game
+
+#p board1.board
